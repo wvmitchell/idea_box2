@@ -1,6 +1,4 @@
-gem 'minitest'
-require 'minitest/autorun'
-require 'minitest/pride'
+require './test/test_helper'
 require './lib/ideabox/idea'
 
 class IdeaTest < MiniTest::Test

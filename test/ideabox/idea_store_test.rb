@@ -1,6 +1,4 @@
-gem 'minitest'
-require 'minitest/autorun'
-require 'minitest/pride'
+require './test/test_helper'
 require './lib/ideabox/idea'
 require './lib/ideabox/idea_store'
 
@@ -48,5 +46,17 @@ class IdeaStoreTest < MiniTest::Test
     idea = IdeaStore.find(id)
     assert_equal "Spam", idea.title
     assert_equal "Great with eggs", idea.description
+  end
+
+  def test_delete_an_idea
+    band = Idea.new("Band", "Let's start a band")
+    wagon = Idea.new("Covered", "Better than not")
+    shoes = Idea.new("Feet", "Hurt without them")
+    id1 = IdeaStore.save(band)
+    id2 = IdeaStore.save(wagon)
+    id3 = IdeaStore.save(shoes)
+    assert_equal %w{Band Covered Feet}, IdeaStore.all.map(&:title)
+    IdeaStore.delete(id2)
+    assert_equal %w{Band Feet}, IdeaStore.all.map(&:title)
   end
 end
