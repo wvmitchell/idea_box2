@@ -30,4 +30,10 @@ class IdeaTest < MiniTest::Test
     ideas = [orange, banana, dog]
     assert_equal [banana, orange, dog], ideas.sort
   end
+
+  def test_ideas_have_ids
+    idea = Idea.new("Boat", "Better than swimming")
+    idea.id = 1
+    assert 1, idea.id
+  end
 end

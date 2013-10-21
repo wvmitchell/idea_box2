@@ -34,4 +34,19 @@ class IdeaStoreTest < MiniTest::Test
     assert_equal "Covered", idea.title
     assert_equal "Better than not", idea.description
   end
+
+  def test_update_an_idea
+    band = Idea.new("Band", "Let's start a band")
+    id = IdeaStore.save(band)
+
+    idea = IdeaStore.find(id)
+    idea.title = "Spam"
+    idea.description = "Great with eggs"
+    IdeaStore.save(idea)
+
+    assert_equal 1, IdeaStore.count
+    idea = IdeaStore.find(id)
+    assert_equal "Spam", idea.title
+    assert_equal "Great with eggs", idea.description
+  end
 end

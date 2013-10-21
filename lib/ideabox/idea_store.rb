@@ -1,9 +1,9 @@
 class IdeaStore
   def self.save(idea)
     @all ||= []
-    id = next_id
-    @all[id] = idea
-    id
+    idea.id = idea.id || next_id
+    @all[idea.id] = idea
+    idea.id
   end
 
   def self.count
