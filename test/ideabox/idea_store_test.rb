@@ -59,4 +59,20 @@ class IdeaStoreTest < MiniTest::Test
     IdeaStore.delete(id2)
     assert_equal %w{Band Feet}, IdeaStore.all.map(&:title)
   end
+
+  def test_find_idea_by_title
+    band = Idea.new("Band", "Let's start a band")
+    wagon = Idea.new("Covered", "Better than not")
+    shoes = Idea.new("Feet", "Hurt without them")
+    id1 = IdeaStore.save(band)
+    id2 = IdeaStore.save(wagon)
+    id3 = IdeaStore.save(shoes)
+    idea = IdeaStore.find_by_title("Band")
+    assert_equal "Band", idea.title
+    assert_equal "Let's start a band", idea.description
+    idea = IdeaStore.find_by_title("Covered")
+    assert_equal "Covered", idea.title
+    assert_equal "Better than not", idea.description
+  end
+
 end

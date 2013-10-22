@@ -4,9 +4,24 @@
   </head>
   <body>
     <h1>IdeaBox</h1>
-    <% ideas.each do |idea| %>
-      <h2><%= idea.title %></h2>
-      <p><%= idea.description %></p><br />
-    <% end %>
+    <form action='/' method='post'>
+      <input type='text' name='title' /><br />
+      <textarea name="description" ></textarea>
+      <input type='submit' value="Save" />
+    </form>
+    <h2>Existing Ideas</h2>
+    <ul>
+      <% ideas.each do |idea| %>
+        <li id="idea_<%= idea.id %>">
+          <h3><%= idea.title %></h3>
+          <p><%= idea.description %></p><br />
+          <a href="/<%= idea.id %>">Edit</a>
+          <form action="/<%= idea.id %>" method='post'>
+            <input type='hidden' name="_method" value="delete">
+            <input type='submit' value="Delete">
+          </form>
+        </li>
+      <% end %>
+    </ul>
   </body>
 </html>

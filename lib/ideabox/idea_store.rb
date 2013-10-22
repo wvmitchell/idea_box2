@@ -30,4 +30,8 @@ class IdeaStore
   def self.all
     @all
   end
+
+  def self.find_by_title(title)
+    all.find {|idea| idea.title == title}
+  end
 end
