@@ -1,5 +1,3 @@
-require 'bundler'
-Bundler.require
 require './lib/ideabox'
 
 class IdeaboxApp < Sinatra::Base
@@ -10,5 +8,4 @@ class IdeaboxApp < Sinatra::Base
     erb :index, locals: {ideas: IdeaStore.all || []}
   end
 
-  run! if app_file == $0
 end
