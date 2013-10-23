@@ -32,6 +32,11 @@ class IdeaTest < MiniTest::Test
   def test_ideas_have_ids
     idea = Idea.new("Boat", "Better than swimming")
     idea.id = 1
-    assert 1, idea.id
+    assert_equal 1, idea.id
+  end
+
+  def test_ideas_have_user_ids
+    idea = Idea.new("Boat", "Better than swimming", 1)
+    assert_equal 1, idea.user_id
   end
 end

@@ -63,13 +63,43 @@ class IdeaManagementTest < Minitest::Test
 
     # Delete the Idea
     within("#idea_#{idea.id}") do
-      click_link 'Delete'
+      click_button 'Delete'
     end
 
     # Idea deleted and dummies still present
     refute page.has_content?('macadamian nut cookies'), "Idea not deleted"
     assert page.has_content?('Toast'), "Dummy idea is not on page"
     assert page.has_content?("Tacos"), "Dummy idea is not on page"
+  end
 
+  def test_ranking_ideas
+    id1 = IdeaStore.save Idea.new("Bread", "Need yeast")
+    id2 = IdeaStore.save Idea.new("Tacos", "Need meat")
+    id3 = IdeaStore.save Idea.new("Table", "Need wood")
+
+    visit '/'
+
+    idea = IdeaStore.find(id2)
+    idea.like!
+    idea.like!
+    idea.like!
+    idea.like!
+    idea.like!
+    IdeaStore.save(idea)
+
+    within("#idea_#{id2}") do
+      3.times do
+        click_button '+'
+      end
+    end
+
+    within("#idea_#{id3}") do
+      click_button '+'
+    end
+
+    ideas = page.all('li')
+    assert_match /Need meat/, ideas[0].text
+    assert_match /Need wood/, ideas[1].text
+    assert_match /Need yeast/, ideas[2].text
   end
 end

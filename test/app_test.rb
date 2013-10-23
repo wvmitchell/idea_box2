@@ -8,6 +8,7 @@ class IdeaBoxAppHelper < MiniTest::Test
 
   def teardown
     IdeaStore.delete_all
+    UserStore.delete_all
   end
 
   def app
@@ -55,4 +56,26 @@ class IdeaBoxAppHelper < MiniTest::Test
 
     refute IdeaStore.find(id)
   end
+
+  def test_like_idea
+    id = IdeaStore.save Idea.new("Home", "Not yet")
+
+    post "/#{id}/like"
+    assert 302, last_response.status
+
+    idea = IdeaStore.find(id)
+    assert_equal 1, idea.rank
+  end
+
+  def test_new_user_page_exists
+    get '/new_user/'
+    assert last_response.ok?
+  end
+
+  def test_new_user_can_be_created
+    post '/new_user/', {username: 'wvm', email: 'wvm@wvm.co', password: 'pass'}
+    assert_equal 1, UserStore.all.count
+    assert_equal 302, last_response.status
+  end
+
 end

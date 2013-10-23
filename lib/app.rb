@@ -4,9 +4,17 @@ class IdeaboxApp < Sinatra::Base
 
   set :root, './lib/app'
   set :method_override, true
+  set :session_secret, ENV["SESSION_KEY"] || 'too secret'
+
+  enable :sessions
+
+  helpers do
+    include Rack::Utils
+    alias_method :h, :escape_html
+  end
 
   get '/' do
-    erb :index, locals: {ideas: IdeaStore.all || []}
+    erb :index, locals: {ideas: (IdeaStore.all|| []).sort}
   end
 
   post '/' do
@@ -31,4 +39,29 @@ class IdeaboxApp < Sinatra::Base
     IdeaStore.delete(id.to_i)
     redirect '/'
   end
+
+  post '/:id/like' do |id|
+    idea = IdeaStore.find(id.to_i)
+    idea.like!
+    IdeaStore.save(idea)
+    redirect '/'
+  end
+
+  get '/new_user/' do
+    erb :new_user
+  end
+
+  post '/new_user/' do
+    UserStore.save User.new(params[:username], params[:email], params[:password])
+    redirect '/'
+  end
+
+  #get '/login' do
+  #  erb :login
+  #end
+
+  #post '/login' do
+  #  session[:user_id] = 1
+  #  redirect '/'
+  #end
 end
