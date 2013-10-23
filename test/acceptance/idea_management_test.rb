@@ -24,18 +24,23 @@ class IdeaManagementTest < Minitest::Test
     # Create decoy ideas
     # So we know we're editing the right idea later
     IdeaStore.save Idea.new("Toast", "It's really just bread")
-    IdeaStore.save Idea.new("Tacos", "Original mexico")
+    IdeaStore.save Idea.new("Tacos", "Original mexico", "spanish tasty")
     # Make sure decoys are present
     visit '/'
     assert page.has_content?('Toast'), "Idea is not on page"
     assert page.has_content?("Tacos"), "Idea is not on page"
+    assert page.has_content?("#spanish"), "Tag is not on page"
+    assert page.has_content?("Rank: 0"), "Rank is not on page"
+
 
     # Create an Idea
     visit '/'
     fill_in 'title', :with => 'eat'
     fill_in 'description', :with => 'chocolate chip cookies'
+    fill_in 'tags', :with => 'freshbaked sweet sexy'
     click_button 'Save'
     assert page.has_content?('chocolate chip cookies'), "Idea is not on page"
+    assert page.has_content?('#sexy'), "Tags are not on page"
 
 
     # Edit the Idea
@@ -97,7 +102,7 @@ class IdeaManagementTest < Minitest::Test
       click_button '+'
     end
 
-    ideas = page.all('li')
+    ideas = page.all('li.idea')
     assert_match /Need meat/, ideas[0].text
     assert_match /Need wood/, ideas[1].text
     assert_match /Need yeast/, ideas[2].text

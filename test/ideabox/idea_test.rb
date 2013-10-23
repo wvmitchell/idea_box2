@@ -36,7 +36,12 @@ class IdeaTest < MiniTest::Test
   end
 
   def test_ideas_have_user_ids
-    idea = Idea.new("Boat", "Better than swimming", 1)
+    idea = Idea.new("Boat", "Better than swimming","love", 1)
     assert_equal 1, idea.user_id
+  end
+
+  def test_ideas_have_tags
+    idea = Idea.new("Boat", "Better than swimming", 'water michigan yacht')
+    assert_equal ['#water','#michigan','#yacht'], idea.tags
   end
 end

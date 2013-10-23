@@ -1,6 +1,10 @@
 source 'https://rubygems.org'
 
 gem 'sinatra', require: 'sinatra/base'
+gem 'datamapper'
+gem 'dm-sqlite-adapter'
+gem 'omniauth'
+gem 'omniauth-twitter'
 group :test do
   gem 'minitest', require: false
   gem 'rack-test', require: false

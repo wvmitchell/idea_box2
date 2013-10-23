@@ -1,10 +1,15 @@
-class User
-  attr_reader :username, :email, :password
-  attr_accessor :id
+%w{omniauth omniauth-twitter dm-core dm-sqlite-adapter dm-migrations}.each {|dependency| require dependency}
 
-  def initialize(username, email, password)
-    @username = username
-    @email = email
-    @password = password
-  end
+DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/database.db")
+
+class User
+  include DataMapper::Resource
+  property :id,         Serial
+  property :uid,        String
+  property :name,       String
+  property :nickname,   String
+  property :created_at, DateTime
 end
+
+DataMapper.finalize
+DataMapper.auto_upgrade!
