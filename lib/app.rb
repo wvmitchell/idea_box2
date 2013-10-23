@@ -56,12 +56,18 @@ class IdeaboxApp < Sinatra::Base
     redirect '/'
   end
 
-  #get '/login' do
-  #  erb :login
-  #end
+  get '/login/' do
+    erb :login
+  end
 
-  #post '/login' do
-  #  session[:user_id] = 1
-  #  redirect '/'
-  #end
+  post '/login/' do
+    user = UserStore.find_by_username(params[:username])
+    password = Digest::MD5.digest(params[:password])
+    if user && user.password == password
+      session[:user_id] = user.id
+      redirect '/'
+    else
+      redirect '/'
+    end
+  end
 end

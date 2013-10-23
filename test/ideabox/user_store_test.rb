@@ -50,4 +50,13 @@ class UserStoreTest < MiniTest::Test
     refute_equal UserStore.all[0].id, UserStore.all[1].id
   end
 
+  def test_find_by_username
+    UserStore.save User.new('wvm','wvm@gm.co','pass')
+    UserStore.save User.new("bob", 'bob@bob.co', 'pass')
+    user = UserStore.find_by_username('bob')
+    assert_equal 'bob', user.username
+    user = UserStore.find_by_username('wvm')
+    assert_equal 'wvm', user.username
+  end
+
 end

@@ -27,4 +27,8 @@ class UserStore
   def self.find(id)
     all.find {|user| user.id == id.to_i}
   end
+
+  def self.find_by_username(usr)
+    all.find {|user| user.username == usr}
+  end
 end
